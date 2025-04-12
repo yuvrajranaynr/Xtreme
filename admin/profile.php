@@ -54,17 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['profile_image'])) {
         echo "<p>Failed to upload image. Please try again.</p>";
     }
 }
-
-// Debugging: Check if the uploaded file is stored in the database
-$check_image = $conn->prepare("SELECT image FROM tutors WHERE id = ?");
-$check_image->execute([$tutor_id]);
-$image_data = $check_image->fetch(PDO::FETCH_ASSOC);
-
-if ($image_data) {
-    echo "<p>Image stored in database: " . htmlspecialchars($image_data['image']) . "</p>";
-} else {
-    echo "<p>No image found in database for this tutor.</p>";
-}
 ?>
    <style>
     <?php
@@ -83,59 +72,38 @@ if ($image_data) {
 <body>
 
    <?php include '../components/admin_header.php'; ?>
-   <section class="tutor-profile" style="min-height: calc(100vh-19rem);">
-    <h1 class="heading">profile details </h1>
+   <section class="tutor-profile" style="min-height: calc(100vh - 19rem);">
+    <h1 class="heading">Profile Details</h1>
     <div class="details">
-
-  <div class="tutor">
-    <!-- Display profile image and details -->
-    <?php if ($fetch_profile): ?>
-        <img src="../uploaded_files/<?= $fetch_profile['image'] ?: 'default.png'; ?>" alt="Profile Image">
-        <h3><?= $fetch_profile['name']; ?></h3>
-        <span><?= $fetch_profile['profession']; ?></span>
-    <?php else: ?>
-        <p>Profile not found. Please update your profile.</p>
-        <img src="../uploaded_files/default.png" alt="Default Profile Image">
-    <?php endif; ?>
-    <a href="update.php" class="btn">update profile</a>
-  </div>
-
-  <form action="" method="post" enctype="multipart/form-data">
-    <label for="profile_image">Upload Profile Image:</label>
-    <input type="file" name="profile_image" id="profile_image" required>
-    <button type="submit">Upload</button>
-  </form>
-
-  <div class="flex">
-
-    <div class="box">
-      <span><?= $total_playlists; ?></span>
-      <p>total playlists</p>
-      <a href="playlists.php" class="btn">view playlists</a>
+        <div class="tutor">
+            <img src="../uploaded_files/<?= $fetch_profile['image'] ?: 'default.png'; ?>" alt="Profile Image">
+            <h3><?= $fetch_profile['name']; ?></h3>
+            <span><?= $fetch_profile['profession']; ?></span>
+            <a href="update.php" class="btn">Update Profile</a>
+        </div>
+        <div class="flex">
+            <div class="box">
+                <span><?= $total_playlists; ?></span>
+                <p>Total Playlists</p>
+                <a href="playlists.php" class="btn">View Playlists</a>
+            </div>
+            <div class="box">
+                <span><?= $total_contents; ?></span>
+                <p>Total Videos</p>
+                <a href="contents.php" class="btn">View Contents</a>
+            </div>
+            <div class="box">
+                <span><?= $total_likes; ?></span>
+                <p>Total Likes</p>
+                <a href="contents.php" class="btn">View Contents</a>
+            </div>
+            <div class="box">
+                <span><?= $total_comments; ?></span>
+                <p>Total Comments</p>
+                <a href="comments.php" class="btn">View Comments</a>
+            </div>
+        </div>
     </div>
-
-    <div class="box">
-      <span><?= $total_contents; ?></span>
-      <p>total videos</p>
-      <a href="contents.php" class="btn">view contents</a>
-    </div>
-
-    <div class="box">
-      <span><?= $total_likes; ?></span>
-      <p>total likes</p>
-      <a href="contents.php" class="btn">view contents</a>
-    </div>
-
-    <div class="box">
-      <span><?= $total_comments; ?></span>
-      <p>total comments</p>
-      <a href="comments.php" class="btn">view comments</a>
-    </div>
-
-  </div>
-
-</div>
-
 </section>
 <?php include '../components/footer.php'; ?>
    <script src="../js/admin_script.js"></script>

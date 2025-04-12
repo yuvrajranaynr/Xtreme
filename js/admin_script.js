@@ -47,7 +47,7 @@ window.onscroll = () => {
         let speed = item.dataset.speed / counterInnerText;
 
         function counterUp() {
-            item.textContent = count+100;
+            item.textContent = count+1;
             if (counterInnerText < count) {
                 clearInterval(stop);
             }
