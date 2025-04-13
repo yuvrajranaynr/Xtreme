@@ -669,6 +669,87 @@ footer .bottom a {
   padding: 0.5rem 0;
   margin-bottom: 1rem;
 }
+/*-------------------------playlist---------------------*/
+/* Playlist Section */
+.playlist {
+  padding: 3rem 0;
+  position: relative;
+}
+
+/* Playlist Form Container */
+.playlist-form form{
+  box-shadow: var(--box-shadow);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  padding-top: 1rem;
+  max-width: 50vw;
+  margin: 2rem auto;
+}
+.playlist-form h1{
+  text-align: center;
+}
+
+/* Paragraph Styling in Form */
+.playlist-form form p {
+  font-size: 1.7rem;
+  color: var(--light-color);
+  padding-top: 1rem;
+  text-transform: capitalize;
+}
+.playlist-form .btn {
+  width: 100%;
+}
+
+/* Required Field Indicator */
+.playlist-form form p span {
+  color: var(--red);
+}
+
+/* Input Fields with .box Class */
+.playlist-form form .box {
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  padding: 1.4rem;
+  font-size: 1.8rem;
+  color: var(--black);
+  box-shadow: var(--box-shadow);
+  width: 100%;
+}
+
+/* Textarea Styling */
+.playlist-form form textarea {
+  height: 20rem;
+  resize: none;
+}
+
+/* Thumbnail Section */
+.playlist-form form .thumb {
+  height: 20rem;
+
+  margin-top: 1rem;
+  position: relative;
+}
+
+/* Thumbnail Image */
+.playlist-form form .thumb img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: .5rem;
+}
+
+/* Background for Thumb */
+.playlist-form form .thumb span {
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  border-radius: .5rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  padding: .5rem 1.5rem;
+  font-size: 2rem;
+}
+
 
 /*-------------------------@media---------------------------*/
 

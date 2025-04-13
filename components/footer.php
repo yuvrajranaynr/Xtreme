@@ -20,7 +20,7 @@
 
       <div class="box">
         <div class="box-counter">
-          <p class="counter" data-speeds="5000">5000</p><i class="bx bx-plus"></i>
+          <p class="counter" data-speed="5000">5000</p><i class="bx bx-plus"></i>
         </div>
         <h3>Successfully Trained</h3>
         <p>Learners & Counting</p>
@@ -28,7 +28,7 @@
 
       <div class="box">
         <div class="box-counter">
-          <p class="counter" data-speeds="1000">1000</p><i class="bx bx-plus"></i>
+          <p class="counter" data-speed="1000">1000</p><i class="bx bx-plus"></i>
         </div>
         <h3>Certification Students</h3>
         <p>Online Course</p>
@@ -85,4 +85,30 @@
 </div>
     </div>
 </footer>
+
+<script>
+(() => {
+  const counters = document.querySelectorAll('.counter');
+
+  counters.forEach((item) => {
+    const target = parseInt(item.textContent.trim(), 10);
+    item.textContent = '0';
+
+    let count = 0;
+    const speed = parseInt(item.dataset.speed, 10) || 2000;
+    const increment = Math.max(1, Math.floor(target / (speed / 10)));
+
+    const interval = setInterval(() => {
+      count += increment;
+      if (count >= target) {
+        item.textContent = target;
+        clearInterval(interval);
+      } else {
+        item.textContent = count;
+      }
+    }, 10); // update every 10ms
+  });
+})();
+</script>
+
 

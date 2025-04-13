@@ -37,35 +37,30 @@ window.onscroll = () => {
 };
 
 /************************counter************************/
-(() => {
+// (() => {
+//     const counters = document.querySelectorAll('.counter');
 
-    const counter = document.querySelectorAll('.counter');
+//     counters.forEach((item) => {
+//         const target = parseInt(item.textContent.trim(), 10); // Convert & clean
+//         item.textContent = '0';
 
-    // Convert to array
-    const array = Array.from(counter);
+//         let count = 0;
+//         const speed = parseInt(item.dataset.speed, 10) || 2000;
+//         const increment = Math.ceil(target / 100); // Fine-tuned increment
+//         const intervalTime = speed / (target / increment);
 
-    // Select array element
-    array.map((item) => {
+//         const stop = setInterval(() => {
+//             count += increment;
+//             if (count >= target) {
+//                 item.textContent = target;
+//                 clearInterval(stop);
+//             } else {
+//                 item.textContent = count;
+//             }
+//         }, intervalTime);
+//     });
+// })();
 
-        // Data layer
-        let counterInnerText = item.textContent;
-        item.textContent = 0;
 
-        let count = 1;
-        let speed = item.dataset.speed / counterInnerText;
 
-        function counterUp() {
-            item.textContent = count+1;
-            if (counterInnerText < count) {
-                clearInterval(stop);
-            }
-        }
-
-        const stop = setInterval(() => {
-            counterUp();
-        }, speed);
-
-    });
-
-})();
 
