@@ -83,7 +83,6 @@ if (isset($message)) {
          <h3><?= $fetch_profile['name']; ?></h3>
          <p><?= $fetch_profile['profession']; ?></p>
          <a href="profile.php" class="btn">view profile</a>
-         <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');" class="btn">logout</a>
       <?php } else { ?>
          <h3>please login or register</h3>
          <div id="flex-btn">

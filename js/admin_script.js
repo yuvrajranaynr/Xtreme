@@ -3,6 +3,9 @@ let profile = document.querySelector('header.flex .profile');
 let searchForm = document.querySelector('.header.flex .search-form');
 let sidebar = document.querySelector('.side-bar');
 
+// Ensure the sidebar is hidden by default
+sidebar.style.display = 'none';
+
 document.querySelector('#user-btn').onclick = () => {
    profile.classList.toggle('active');
    searchForm.classList.remove('active');
@@ -13,10 +16,15 @@ document.querySelector('#search-btn').onclick = () => {
    searchForm.classList.toggle('active');
 };
 
-document.querySelector('#menu-btn').onclick = () => {
-   sidebar.classList.toggle('active');
-   body.classList.toggle('active');
-};
+// Add an event listener to the menu button to toggle the sidebar visibility
+const menuBtn = document.querySelector('#menu-btn');
+menuBtn.addEventListener('click', () => {
+    if (sidebar.style.display === 'none') {
+        sidebar.style.display = 'block';
+    } else {
+        sidebar.style.display = 'none';
+    }
+});
 
 window.onscroll = () => {
    profile.classList.remove('active');

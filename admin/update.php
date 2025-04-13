@@ -4,7 +4,7 @@ include '../components/connect.php';
 if(isset($_COOKIE['tutor_id'])){
     $tutor_id = $_COOKIE['tutor_id'];
  }else{
-    $tutor_id = ''; // Fixed the space to an empty string
+    $tutor_id = '';
     header('location: login.php');
  }
 
@@ -33,16 +33,16 @@ if(isset($_COOKIE['tutor_id'])){
         $message[] = 'profession updated successfully!';
     }
     if(!empty($email)){
-        $select_email = $conn->prepare("UPDATE `tutors` SET email = ? WHERE id = ? AND email = ?");
-        $select_email->execute([$tutor_id,$email]);
+        $select_email = $conn->prepare("SELECT * FROM `tutors` WHERE email = ? AND id != ?");
+        $select_email->execute([$email, $tutor_id]);
         if($select_email->rowCount() > 0){
-            $message[] = 'email updated successfully!';
+            $message[] = 'Email already exists!';
         }else{
             $update_email = $conn->prepare("UPDATE `tutors` SET email = ? WHERE id = ?");
             $update_email->execute([$email, $tutor_id]);
-            $message[] = 'email updated successfully!';
+            $message[] = 'Email updated successfully!';
+        }
     }
-}
 
  $image = $_FILES['image']['name'];
  $image = filter_var($image, FILTER_SANITIZE_STRING);
@@ -65,23 +65,29 @@ if(isset($_COOKIE['tutor_id'])){
     }
 
     $empty_pass  = 'da39a3ee5e6b4b0d3255bfef95601890afd80709';
-    $old_pass = sha1($_POST['old_pass']);
+    $old_pass = $_POST['old_pass'];
     $old_pass = filter_var($old_pass, FILTER_SANITIZE_STRING);
-    $new_pass = sha1($_POST['new_pass']);
+    $new_pass = $_POST['new_pass'];
     $new_pass = filter_var($new_pass, FILTER_SANITIZE_STRING);
-    $cpass = sha1($_POST['cpass']);
+    $cpass = $_POST['cpass'];
     $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
 
-    if($old_pass != $empty_pass){
-        if($old_pass != $prev_pass){
-            $message[] = 'old password not matched!';
-        }elseif($new_pass != $cpass){
-            $message[] = 'confirm password not matched!';
-        }else{
-            if($new_pass != $empty_pass){
+    // Debugging: Log the values of $prev_pass and $old_pass to the browser console
+    echo "<script>console.log('Stored password (hashed): $prev_pass');</script>";
+    echo "<script>console.log('Entered old password: $old_pass');</script>";
+
+    if($old_pass !== $empty_pass){
+        // Use password_verify to compare the entered old password with the stored hashed password
+        if (!password_verify($old_pass, $prev_pass)) {
+            $message[] = 'Old password does not match!';
+        } else {
+            if ($new_pass !== $cpass) {
+                $message[] = 'Confirm password does not match!';
+            } else {
+                $hashed_new_pass = password_hash($cpass, PASSWORD_DEFAULT); // Hash the new password before storing
                 $update_pass = $conn->prepare("UPDATE `tutors` SET password = ? WHERE id = ?");
-                $update_pass->execute([$cpass, $tutor_id]);
-                $message[] = 'password updated successfully!';
+                $update_pass->execute([$hashed_new_pass, $tutor_id]);
+                $message[] = 'Password updated successfully!';
             }
         }
     } else {
@@ -148,7 +154,7 @@ if(isset($_COOKIE['tutor_id'])){
       </div>
       <p>Update pic <span>*</span></p>
       <input type="file" name="image" accept="image/*" required class="box">
-      <input type="submit" name="submit" class="btn" value="register now">
+      <input type="submit" name="submit" class="btn" value="Update Profile">
    </form>
 </div>
 <?php include '../components/footer.php'; ?>

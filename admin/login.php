@@ -67,7 +67,7 @@ if (isset($message)) {
 
 
       <p class="link">do not have an account? <a href="register.php">register now</a></p>
-      <input type="submit" name="submit" class="btn" value="register now">
+      <input type="submit" name="submit" class="btn" value="Login now">
    </form>
 </div>
 </body>
