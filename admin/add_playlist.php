@@ -68,7 +68,7 @@ if(isset($_POST['submit'])){
   </select>
 
   <p>Playlist Title <span>*</span></p>
-  <input type="text" name="title" maxlength="100" required placeholder="Enter playlist title" class="box">
+  <input type="text" name="title" maxlength="150" required placeholder="Enter playlist title" class="box">
 
   <p>Playlist Description <span>*</span></p>
   <textarea name="description" class="box" placeholder="Write description" maxlength="1000" cols="30" rows="10" required></textarea>
