@@ -1,6 +1,8 @@
 <?php
 include '../components/connect.php';
 
+$message = [];
+
 if(isset($_COOKIE['tutor_id'])){
    $tutor_id = $_COOKIE['tutor_id'];
 }else{
@@ -8,47 +10,112 @@ if(isset($_COOKIE['tutor_id'])){
    header('location: login.php');
 }
 
-$get_id = $_GET['get_id'] ?? '';
-if (empty($get_id)) {
-    header('location: contents.php');
-    exit;
+if(isset($_GET['get_id'])){
+    $get_id = $_GET['get_id'];
+}
+else{
+    header('location: dashboard.php');
 }
 
-if(isset($_POST['submit'])){
-    $id = unique_id();
+if(isset($_POST['update'])){
+    $video_id = $_POST['video_id'];
+    $video_id = filter_var($video_id, FILTER_SANITIZE_STRING);
     $title = $_POST['title'];
     $title = filter_var($title, FILTER_SANITIZE_STRING);
-    $description = $_POST['description'];
-    $description = filter_var($description, FILTER_SANITIZE_STRING);
     $status = $_POST['status'];
     $status = filter_var($status, FILTER_SANITIZE_STRING);
+    $description = $_POST['description'];
+    $description = filter_var($description, FILTER_SANITIZE_STRING);
     $playlist = $_POST['playlist'];
-      $playlist = filter_var($playlist, FILTER_SANITIZE_STRING);
+    $playlist = filter_var($playlist, FILTER_SANITIZE_STRING);
+    $update_content = $conn->prepare("UPDATE `content` SET title = ?, description = ?, status = ? WHERE id = ?");
+    $update_content->execute([$title, $description, $status, $video_id]);
+
+    if(!empty($playlist)){
+        $update_playlist = $conn->prepare("UPDATE `content` SET playlist_id = ? WHERE id = ?");
+        $update_playlist->execute([$playlist, $video_id]);
+    } 
+    
+    
+
+    $old_thumb = $_POST['old_thumb'];
+    $old_thumb = filter_var($old_thumb, FILTER_SANITIZE_STRING);
     $image = $_FILES['image']['name'];
     $image = filter_var($image, FILTER_SANITIZE_STRING);
-    $ext = pathinfo($image, PATHINFO_EXTENSION);
-    $rename_image = unique_id().'.'.$ext;
+    $image_ext = pathinfo($image, PATHINFO_EXTENSION);
+    $rename_image = unique_id().'.'.$image_ext;
     $image_size = $_FILES['image']['size'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folder = '../uploaded_files/'.$rename_image;
+    if(!empty($image)){
+        if($image_size > 2000000){
+            $message[] = 'Image size is too large!';
+        }else{
+            $update_thumb = $conn->prepare("UPDATE `content` SET thumb = ? WHERE id = ?");
+            $update_thumb->execute([$rename_image, $video_id]);
+            move_uploaded_file($image_tmp_name, $image_folder);
+            if(!empty($old_thumb) && file_exists('../uploaded_files/' . $old_thumb) && !is_dir('../uploaded_files/' . $old_thumb)){
+                unlink('../uploaded_files/' . $old_thumb);
+            }
+        }
+    }
 
-    $videos = $_FILES['video']['name'];
-    $videos = filter_var($videos, FILTER_SANITIZE_STRING);
-    $video_ext = pathinfo($videos, PATHINFO_EXTENSION);
+    $old_video = $_POST['old_video'];
+    $old_video = filter_var($old_video, FILTER_SANITIZE_STRING);
+
+    $video = $_FILES['video']['name'];
+    $video = filter_var($video, FILTER_SANITIZE_STRING);
+
+    $video_ext = pathinfo($video, PATHINFO_EXTENSION);
     $rename_video = unique_id().'.'.$video_ext;
     $video_tmp_name = $_FILES['video']['tmp_name'];
     $video_folder = '../uploaded_files/'.$rename_video;
 
-    if($image_size > 2000000){
-        $message[] = 'image size is too large!';
-    }else{
-      $add_playlist = $conn->prepare("INSERT INTO `content`(id, tutor_id, playlist_id, title, description, video, thumb, status) VALUES(?,?,?,?,?,?,?,?)");
-      $add_playlist->execute([$id, $tutor_id, $playlist, $title, $description, $rename_video, $rename_image, $status]);
-      move_uploaded_file($image_tmp_name, $image_folder);
-      move_uploaded_file($video_tmp_name, $video_folder);
-      $message[] = 'Content uploaded successfully!';
+    if(!empty($video)){
+        $update_video = $conn->prepare("UPDATE `content` SET video = ? WHERE id = ?");
+        $update_video->execute([$rename_video, $video_id]); 
+        move_uploaded_file($video_tmp_name, $video_folder);
+        if(!empty($old_video) && file_exists('../uploaded_files/' . $old_video) && !is_dir('../uploaded_files/' . $old_video)){
+            unlink('../uploaded_files/' . $old_video);
+        }   
+    }
+
+    if(empty($message)){
+        header("location: update_content.php?get_id=$get_id&updated=1");
+        exit;
     }
 }
+
+if(isset($_POST['delete_video'])){
+    $delete_id = $_POST['video_id'];
+    $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
+    $delete_video_thumb = $conn->prepare("SELECT thumb FROM `content` WHERE id = ? LIMIT 1");
+    $delete_video_thumb->execute([$delete_id]);
+    $fetch_thumb = $delete_video_thumb->fetch(PDO::FETCH_ASSOC);
+    if(file_exists('../uploaded_files/' . $fetch_thumb['thumb']) && !is_dir('../uploaded_files/' . $fetch_thumb['thumb'])){
+        unlink('../uploaded_files/' . $fetch_thumb['thumb']);
+    }
+    
+    $delete_video = $conn->prepare("SELECT video FROM `content` WHERE id = ? LIMIT 1");
+    $delete_video->execute([$delete_id]);
+    $fetch_thumb = $delete_video->fetch(PDO::FETCH_ASSOC);
+    if(file_exists('../uploaded_files/' . $fetch_thumb['video']) && !is_dir('../uploaded_files/' . $fetch_thumb['video'])){
+        unlink('../uploaded_files/' . $fetch_thumb['video']);
+    }
+
+    $delete_likes = $conn->prepare("DELETE FROM `likes` WHERE content_id = ?");
+    $delete_likes->execute([$delete_id]);
+
+    $delete_comments = $conn->prepare("DELETE FROM `comments` WHERE content_id = ?");
+    $delete_comments->execute([$delete_id]);
+
+    $delete_content = $conn->prepare("DELETE FROM `content` WHERE id = ? LIMIT 1");
+    $delete_content->execute([$delete_id]);
+
+    header("location: update_content.php?get_id=$get_id");
+    exit;
+}
+
 ?>
    <style>
     <?php
@@ -73,6 +140,21 @@ if(isset($_POST['submit'])){
 <body>
 
    <?php include '../components/admin_header.php'; ?>
+   <?php
+   // Display success message after redirect
+   if (isset($_GET['updated']) && $_GET['updated'] == 1) {
+       echo "<p class='message'>Content updated successfully!</p>";
+   }
+   if (!empty($message)) {
+       if (is_array($message)) {
+           foreach($message as $msg) {
+               echo "<p class='message'>" . htmlspecialchars($msg) . "</p>";
+           }
+       } else {
+           echo "<p class='message'>" . htmlspecialchars($message) . "</p>";
+       }
+   }
+   ?>
    <section class="video-form">
 
 <h1 class="heading"> Upload Content</h1>
@@ -131,9 +213,9 @@ if($select_video->rowCount()>0){
   <input type="file" name="video" accept="video/*" required class="box">
 
   <div class="flex-btn">
-      <input type="submit" name="submit" value="Upload video" class="btn">
+      <input type="submit" name="update" value="Update Content" class="btn">
       <a href="view_content.php?get_id=<?= $video_id; ?>" class="btn">View Content</a>
-      <input type="submit" name="delete_content" value="Delete Content" class="btn" onclick="return confirm('Delete this content?');">
+      <input type="submit" name="delete_video" value="Delete Content" class="btn" onclick="return confirm('Delete this content?');">
   </div>
 
 </form>
