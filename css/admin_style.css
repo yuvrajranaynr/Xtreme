@@ -970,7 +970,7 @@ footer .bottom a {
 .video-form form img {
   width: 100%;
   height: 20rem;
-  border-radius: 5rem;
+  border-radius: .5rem;
   margin: 5rem 0;
 }
 
@@ -979,8 +979,8 @@ footer .bottom a {
   background-color: #000;
   width: 100%;
   height: 20rem;
-  border-radius: 5rem;
-  margin: 5rem;
+  border-radius: .5rem;
+  margin: .5rem;
 }
 
 /*---------------Contents-----------------------*/
