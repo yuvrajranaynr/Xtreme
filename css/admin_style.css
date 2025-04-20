@@ -762,7 +762,7 @@ footer .bottom a {
 }
 
 .playlists .box-container .add,
-.content .add {
+.contents .add {
   position: absolute;
   right: -10%;
   top: 1%;
@@ -776,13 +776,13 @@ footer .bottom a {
 }
 
 .playlists .box-container .add i,
-.content .add {
+.contents .add i {
     font-size: 3rem;
     color: #fff;
 }
 
 .playlists .box-container .add:hover,
-.content .add:hover {
+.contents .add:hover {
     background-image: var(--gradient);
 }
 
@@ -982,6 +982,198 @@ footer .bottom a {
   border-radius: 5rem;
   margin: 5rem;
 }
+
+/*---------------Contents-----------------------*/
+.contents {
+  position: relative;
+}
+
+.contents .box-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 50rem);
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.contents .box-container .box {
+  border-radius: 0.5rem;
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  padding: 2rem;
+  overflow-x: hidden;
+}
+
+.contents .box-container .box .thumb {
+  height: 20rem;
+  width: 100%;
+  border-radius: .5rem;
+  object-fit: cover;
+  margin: 1rem 0;
+}
+.contents .box-container .box .flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.contents .box-container .box .flex i {
+  font-size: 2rem;
+  color: var(--main-color);
+  margin-right: 1rem;
+}
+
+.contents .box-container .box .flex span {
+  font-size: 2rem;
+  color: var(--light-color);
+}
+.contents .box-container .box title{
+  font-size: 2rem;
+  color: var(--black);
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/****************view content *****************/
+.view-content .container {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    padding: 2rem;
+}
+
+.view-content .container .video {
+    width: 100%;
+    object-fit: contain;
+    margin-bottom: 1rem;
+    background: #000;
+    height: 50rem;
+}
+
+.view-content .container .date {
+    padding: 1rem 0;
+    font-size: 1.7rem;
+    margin-right: 1rem;
+    color: var(--color-secondary);
+}
+
+.view-content .container .date i{
+  margin-right: 1rem;
+  color: var(--color-secondary);
+}
+.view-content .container .date span {
+    color: var(--light-color);
+}
+
+.view-content .container .title {
+    font-size: 2rem;
+    text-transform: capitalize;
+    padding: 0.5rem 0;
+}
+
+.view-content .container .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    font-size: 1.8rem;
+    border-top: var(--border);
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+.view-content .container .flex div {
+  background-color: var(--light-bg);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.view-content .container .flex i {
+  margin-right: 1rem;
+  color: var(--color-secondary);
+}
+
+.view-content .container .flex span {
+  color: var(--light-color);
+}
+
+.view-content .container .description {
+  padding: 0.5rem 0;
+  line-height: 1.7;
+  color: var(--light-color);
+  font-size: 1.7rem;
+}
+.comments .show-comments {
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  gap: 2.5rem;
+}
+
+.comments .show-comments .user {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.comments .show-comments .user img {
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.comments .show-comments .user h3 {
+  font-size: 2rem;
+  color: var(--black);
+  margin-bottom: 1rem;
+}
+
+.comments .show-comments .user span {
+  color: var(--light-color);
+  font-size: 1.5rem;
+}
+.comments .show-comments .content {
+  margin-bottom: 2rem;
+}
+.comments .show-comments .content p{
+  font-size: 2rem;
+  color: var(--black);
+  padding: 0 1rem;
+  display: inline-block;
+}
+
+.comments .show-comments .content span {
+  font-size: 1.7rem;
+  color: var(--light-color);
+}
+
+.comments .show-comments .content a {
+  color: var(--main-color);
+  font-size: 1.8rem;
+}
+
+.comments .show-comments .content a:hover {
+  text-decoration: underline;
+}
+
+.comments .show-comments .text::before {
+  content: '';
+  position: absolute;
+  top: -1rem;
+  left: 1.5rem;
+  height: 1.2rem;
+  width: 2rem;
+  background-color: var(--light-bg);
+  clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+}
+
+
+
 
 
 

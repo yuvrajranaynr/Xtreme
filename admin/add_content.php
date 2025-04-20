@@ -109,7 +109,7 @@ if(isset($_POST['submit'])){
   <p>Select Thumbnail<span>*</span></p>
   <input type="file" name="image" accept="image/*" required class="box">
   <p>Select Video<span>*</span></p>
-  <input type="file" name="image" accept="video/*" required class="box">
+  <input type="file" name="video" accept="video/*" required class="box">
   <input type="submit" name="submit" value="Upload video" class="btn">
 
 </form>
