@@ -39,3 +39,18 @@ tabsContainer.addEventListener('click', (e) => {
   panel?.classList.add('active');
 });
 
+/*******************************testimonial************************************ */
+let slides = document.querySelectorAll('.testimonial-item');
+let index = 0;
+
+function nextSlide() {
+  slides[index].classList.remove('active');
+  index = (index + 1) % slides.length;
+  slides[index].classList.add('active');
+}
+
+function prevSlide() {
+  slides[index].classList.remove('active');
+  index = (index - 1 + slides.length) % slides.length; // Corrected the variable name to 'index'
+  slides[index].classList.add('active');
+}
