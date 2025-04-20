@@ -43,7 +43,7 @@
 <footer>
     <div class=content>
         <div class="box">
-        <img src="../image/logo.png" alt="">
+        <img src="/TeamXtremeProject/image/logo.png" alt="logo">
         <p>We're always in search for <br> talented and motivated people.</p>
         <p>join our growing community to <br>
            make a difference together.</p>

@@ -1,12 +1,14 @@
 <?php
-if (isset($message)) {
-   foreach ($message as $message) {
-      echo '
-      <div class="message">
-         <span>' . $message . '</span>
-         <i class="bx bx-x" onclick="this.parentElement.remove();"></i>
-      </div>
-      ';
+// include database connection and ensure tutor_id is set
+include_once __DIR__ . '/connect.php';
+$tutor_id = $_COOKIE['tutor_id'] ?? '';
+// initialize message array if not already
+$message = $message ?? [];
+
+// display any flash messages
+if (!empty($message)) {
+   foreach ($message as $msg) {
+      echo "<div class='message'><span>" . htmlspecialchars($msg) . "</span><i class='bx bx-x' onclick='this.parentElement.remove();'></i></div>";
    }
 }
 ?>
@@ -37,11 +39,6 @@ if (isset($message)) {
       <!-- Profile Box -->
       <div class="profile">
          <?php
-            // Ensure $tutor_id is defined before using it
-            if (!isset($tutor_id)) {
-               $tutor_id = 0;
-            }
-
             $select_profile = $conn->prepare("SELECT * FROM tutors WHERE id = ?");
             $select_profile->execute([$tutor_id]);
 
